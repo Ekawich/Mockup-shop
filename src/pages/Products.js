@@ -9,6 +9,7 @@ import Breadcrumb from '../components/UI/Breadcrumb';
 
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import { searchActions } from '../store/search';
 
 const Products = () => {
     const dispatch = useDispatch()
@@ -53,6 +54,7 @@ const Products = () => {
     }
 
     const selectCategories = (value) => {
+        dispatch(searchActions.searchValue(""))
         if (value === "all") {
             setProductByCate("")
             setBreadcrumb("")
@@ -73,28 +75,24 @@ const Products = () => {
     return (
         <div>
             <Grid container spacing={2} columns={16}>
-                {allProduct &&
-                    <Fragment>
-                        <Grid item md={3} sm={0}>
-                            <Categories changeCate={selectCategories} />
+                <Grid item md={3} sm={0}>
+                    <Categories changeCate={selectCategories} />
+                </Grid>
+                {allProduct != "" && <Grid item md={13} sm={16}>
+                    <Grid container sx={{ mb: 2 }}>
+                        <Grid item>
+                            <Breadcrumb breadcrumb={breadcrumb} />
                         </Grid>
-                        <Grid item md={13} sm={16}>
-                            <Grid container sx={{ mb: 2 }}>
-                                <Grid item>
-                                    <Breadcrumb breadcrumb={breadcrumb} />
-                                </Grid>
-                            </Grid>
-                            <AllProduct products={allProduct} onClick={addToCart} />
-                            <Grid container sx={{ mt: 2 }}>
-                                <Grid item>
-                                    <Box>
-                                        <Paginate alignItem="end" countData={countTotalProducts} changePage={skipDataChange} />
-                                    </Box>
-                                </Grid>
-                            </Grid>
+                    </Grid>
+                    <AllProduct products={allProduct} onClick={addToCart} />
+                    <Grid container sx={{ mt: 2 }}>
+                        <Grid item>
+                            <Box>
+                                <Paginate alignItem="end" countData={countTotalProducts} changePage={skipDataChange} />
+                            </Box>
                         </Grid>
-                    </Fragment>
-                }
+                    </Grid>
+                </Grid>}
             </Grid>
         </div>
     );
