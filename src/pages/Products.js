@@ -1,4 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { cartActions } from '../store/cart';
 
 import AllProduct from '../components/Product/AllProduct'
 import Paginate from '../components/UI/Paginate';
@@ -8,6 +10,8 @@ import Breadcrumb from '../components/UI/Breadcrumb';
 import Grid from '@mui/material/Grid';
 
 const Products = () => {
+    const dispatch = useDispatch()
+
     const [allProduct, setAllProduct] = useState(null)
     const [countTotalProducts, setCountTotalProducts] = useState(1)
     const [skip, setSkip] = useState(0) // pages
@@ -29,6 +33,7 @@ const Products = () => {
             }
         })
         const data = await response.json()
+        // console.log(data)
         setAllProduct(data.products)
         setCountTotalProducts(data.total)
     }
@@ -38,9 +43,19 @@ const Products = () => {
     }
 
     const selectCategories = (value) => {
-        let newCate = "/category/" + value
-        setProductByCate(newCate)
-        setBreadcrumb(newCate)
+        if (value === "all") {
+            setProductByCate("")
+            setBreadcrumb("")
+        } else {
+            let newCate = "/category/" + value
+            setProductByCate(newCate)
+            setBreadcrumb(newCate)
+        }
+    }
+
+    const addToCart = (item) => {
+        // console.log(item)
+        dispatch(cartActions.addItems(item))
     }
 
     return (
@@ -57,10 +72,10 @@ const Products = () => {
                                     <Breadcrumb breadcrumb={breadcrumb} />
                                 </Grid>
                             </Grid>
-                            <AllProduct products={allProduct} />
+                            <AllProduct products={allProduct} onClick={addToCart} />
                             <Grid container sx={{ mt: 2 }}>
                                 <Grid item>
-                                    <Paginate countData={countTotalProducts} changePage={skipDataChange} />
+                                    <Paginate alignItem="end" countData={countTotalProducts} changePage={skipDataChange} />
                                 </Grid>
                             </Grid>
                         </Grid>

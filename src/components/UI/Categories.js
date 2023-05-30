@@ -28,7 +28,7 @@ const Categories = (props) => {
                     }
                 }
                 allCate.push(womens, mens)
-                console.log(allCate)
+                // console.log(allCate)
                 setAllCategories(allCate)
             })
     }, [])
@@ -49,6 +49,9 @@ const Categories = (props) => {
                 </ListSubheader>
             }
         >
+            <ListItemButton onClick={() => props.changeCate("all")}>
+                <ListItemText primary="ALL PRODUCTS" />
+            </ListItemButton>
             {allCategories && allCategories.map((item, idx) => {
                 return (
                     typeof item !== 'object' ?

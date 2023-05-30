@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React from 'react';
 import Grid from '@mui/material/Grid';
 import ProductCard from '../UI/ProductCard'
 
@@ -13,7 +13,16 @@ const AllProduct = (props) => {
             {props.products.map((item, idx) => {
                 return (
                     <Grid item md={3} sm={4} xs={6} key={item.id}>
-                        <ProductCard title={item.title} desc={item.description} thumbnail={item.thumbnail} />
+                        <ProductCard
+                            id={item.id}
+                            title={item.title}
+                            desc={item.description}
+                            thumbnail={item.thumbnail}
+                            brand={item.brand}
+                            price={item.price}
+                            discountPercentage={item.discountPercentage}
+                            rate={item.rating}
+                            onClick={props.onClick} />
                     </Grid>
                 )
             })}
