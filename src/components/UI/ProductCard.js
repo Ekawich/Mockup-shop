@@ -13,7 +13,6 @@ import Stack from '@mui/material/Stack';
 
 const ProductCard = (props) => {
     const discount = ((props.price * props.discountPercentage) / 100).toFixed(2)
-    const netPrice = (props.price - discount).toFixed(2)
 
     const setItemToCart = () => {
         let item = {
@@ -21,7 +20,9 @@ const ProductCard = (props) => {
             brand: props.brand,
             thumbnail: props.thumbnail,
             title: props.title,
-            price: netPrice,
+            discount: discount,
+            desc: props.desc,
+            price: props.price,
             quantity: 1
         }
         props.onClick(item)
@@ -30,7 +31,7 @@ const ProductCard = (props) => {
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia
-                sx={{ height: 150 }}
+                sx={{ height: 200, width: 200 }}
                 image={props.thumbnail}
                 title={props.title}
             />
@@ -43,7 +44,7 @@ const ProductCard = (props) => {
                 </Typography>
                 <Stack direction="row">
                     <Typography variant="h5" sx={{ mr: 1 }}>
-                        {netPrice + "$"}
+                        {(props.price - discount).toFixed(2) + "$"}
                     </Typography>
                     <Typography variant="h6" sx={{ textDecoration: "line-through" }}>
                         {props.price + "$"}
