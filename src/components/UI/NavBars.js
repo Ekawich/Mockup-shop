@@ -11,6 +11,7 @@ import Badge from '@mui/material/Badge';
 import Stack from '@mui/material/Stack';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const NavBars = () => {
     const dispatch = useDispatch()
@@ -25,6 +26,18 @@ const NavBars = () => {
             <AppBar position="static" >
                 <Container>
                     <Toolbar>
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            sx={{
+                                mr: 2,
+                                display: { sm: 'block', md: 'none' }
+                            }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} href="/">
                             MOCKUP-SHOP
                         </Typography>

@@ -43,6 +43,7 @@ const Categories = (props) => {
         <List
             component="nav"
             aria-labelledby="nested-list-subheader"
+            sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}
             subheader={
                 <ListSubheader component="div" id="nested-list-subheader">
                     Categories
