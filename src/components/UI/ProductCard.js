@@ -31,7 +31,7 @@ const ProductCard = (props) => {
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia
-                sx={{ height: 200, width: 200 }}
+                sx={{ height: 200 }}
                 image={props.thumbnail}
                 title={props.title}
             />
