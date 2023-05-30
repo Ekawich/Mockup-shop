@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../store/cart';
 
 import AllProduct from '../components/Product/AllProduct'
@@ -8,9 +8,11 @@ import Categories from '../components/UI/Categories';
 import Breadcrumb from '../components/UI/Breadcrumb';
 
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 const Products = () => {
     const dispatch = useDispatch()
+    const search = useSelector(state => state.search.value)
 
     const [allProduct, setAllProduct] = useState(null)
     const [countTotalProducts, setCountTotalProducts] = useState(1)
@@ -20,12 +22,20 @@ const Products = () => {
 
     useEffect(() => {
         getProducts()
-    }, [skip, productByCate])
+    }, [skip, productByCate, search])
 
     const getProducts = async () => {
         let main = "https://dummyjson.com/products"
-        let limitPage = "?limit=12&skip=" + skip
-        let url = main + productByCate + limitPage
+        let searchValue = "/search?q=" + search
+        let limitPage = "limit=12&skip=" + skip
+        let url = ""
+        if (search) {
+            url = main + searchValue + "&" + limitPage
+            setProductByCate("")
+            setBreadcrumb("")
+        } else {
+            url = main + productByCate + "?" + limitPage
+        }
         const response = await fetch(url, {
             method: "GET",
             headers: {
@@ -46,10 +56,12 @@ const Products = () => {
         if (value === "all") {
             setProductByCate("")
             setBreadcrumb("")
+            setSkip(0)
         } else {
             let newCate = "/category/" + value
             setProductByCate(newCate)
             setBreadcrumb(newCate)
+            setSkip(0)
         }
     }
 
@@ -75,7 +87,9 @@ const Products = () => {
                             <AllProduct products={allProduct} onClick={addToCart} />
                             <Grid container sx={{ mt: 2 }}>
                                 <Grid item>
-                                    <Paginate alignItem="end" countData={countTotalProducts} changePage={skipDataChange} />
+                                    <Box>
+                                        <Paginate alignItem="end" countData={countTotalProducts} changePage={skipDataChange} />
+                                    </Box>
                                 </Grid>
                             </Grid>
                         </Grid>

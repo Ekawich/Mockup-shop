@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialCounterState = {
+const initialCartState = {
     items: [],
     totalAmount: 0,
     toggleCart: false
@@ -8,7 +8,7 @@ const initialCounterState = {
 
 const addCartSlice = createSlice({
     name: "cart",
-    initialState: initialCounterState,
+    initialState: initialCartState,
     reducers: {
         addItems(state, action) {
             const newItem = action.payload
