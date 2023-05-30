@@ -16,25 +16,26 @@ const Categories = (props) => {
             .then(response => response.json())
             .then(data => {
                 let allCate = []
-                let womens = [{ womenCate: [], toggle: false }]
-                let mens = [{ menCate: [], toggle: false }]
+                let womens = { subCate: [], toggle: false }
+                let mens = { subCate: [], toggle: false }
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].includes('womens-')) {
-                        womens[0].womenCate.push(data[i])
+                        womens.subCate.push(data[i])
                     } else if (data[i].includes('mens-')) {
-                        mens[0].menCate.push(data[i])
+                        mens.subCate.push(data[i])
                     } else {
                         allCate.push(data[i])
                     }
                 }
                 allCate.push(womens, mens)
+                console.log(allCate)
                 setAllCategories(allCate)
             })
     }, [])
 
     const dropdownToggle = (idx) => {
         let newValue = [...allCategories]
-        newValue[idx][0].toggle = !newValue[idx][0].toggle
+        newValue[idx].toggle = !newValue[idx].toggle
         setAllCategories(newValue)
     };
 
@@ -50,47 +51,26 @@ const Categories = (props) => {
         >
             {allCategories && allCategories.map((item, idx) => {
                 return (
-                    !Array.isArray(item) ?
-                        <ListItemButton key={idx} onClick={() => props.changeCate(item)}>
+                    typeof item !== 'object' ?
+                        <ListItemButton key={item + idx} onClick={() => props.changeCate(item)}>
                             <ListItemText primary={item.toUpperCase()} />
                         </ListItemButton> :
-                        <Fragment>
-                            {Object.getOwnPropertyNames(item[0])[0] === 'womenCate' ?
-                                <Fragment>
-                                    <ListItemButton onClick={() => dropdownToggle(idx)}>
-                                        <ListItemText primary="WOMENS" />
-                                        {item[0].toggle ? <ExpandLess /> : <ExpandMore />}
-                                    </ListItemButton>
-                                    <Collapse in={item[0].toggle} timeout="auto" unmountOnExit>
-                                        <List component="div" disablePadding>
-                                            {item[0].womenCate.map((item2, idx2) => {
-                                                return (
-                                                    <ListItemButton sx={{ pl: 4 }} key={'women' + idx2} onClick={() => props.changeCate(item2)}>
-                                                        <ListItemText primary={item2.replace('womens-', '').toUpperCase()} />
-                                                    </ListItemButton>
-                                                )
-                                            })}
-                                        </List>
-                                    </Collapse>
-                                </Fragment> :
-                                <Fragment>
-                                    <ListItemButton onClick={() => dropdownToggle(idx)}>
-                                        <ListItemText primary="MENS" />
-                                        {item[0].toggle ? <ExpandLess /> : <ExpandMore />}
-                                    </ListItemButton>
-                                    <Collapse in={item[0].toggle} timeout="auto" unmountOnExit>
-                                        <List component="div" disablePadding>
-                                            {item[0].menCate.map((item3, idx3) => {
-                                                return (
-                                                    <ListItemButton sx={{ pl: 4 }} key={'men' + idx3} onClick={() => props.changeCate(item3)}>
-                                                        <ListItemText primary={item3.replace('mens-', '').toUpperCase()} />
-                                                    </ListItemButton>
-                                                )
-                                            })}
-                                        </List>
-                                    </Collapse>
-                                </Fragment>
-                            }
+                        <Fragment key={item + idx}>
+                            <ListItemButton onClick={() => dropdownToggle(idx)}>
+                                <ListItemText primary={item.subCate[0].split('-')[0].toUpperCase()} />
+                                {item.toggle ? <ExpandLess /> : <ExpandMore />}
+                            </ListItemButton>
+                            <Collapse in={item.toggle} timeout="auto" unmountOnExit>
+                                <List component="div" disablePadding>
+                                    {item.subCate.map((item2, idx2) => {
+                                        return (
+                                            <ListItemButton sx={{ pl: 4 }} key={item2 + idx2} onClick={() => props.changeCate(item2)}>
+                                                <ListItemText primary={item2.split('-')[1].toUpperCase()} />
+                                            </ListItemButton>
+                                        )
+                                    })}
+                                </List>
+                            </Collapse>
                         </Fragment>
                 )
             })}
