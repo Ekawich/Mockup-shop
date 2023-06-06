@@ -48,6 +48,7 @@ const Cart = () => {
                     {itemInCart.map((item, idx) => {
                         return (
                             <CartItem
+                                key={item.id + idx}
                                 id={item.id}
                                 thumbnail={item.thumbnail}
                                 brand={item.brand}

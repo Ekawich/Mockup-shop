@@ -73,12 +73,12 @@ const Products = () => {
     }
 
     return (
-        <div>
+        <Fragment>
             <Grid container spacing={2} columns={16}>
                 <Grid item md={3} sm={0}>
                     <Categories changeCate={selectCategories} />
                 </Grid>
-                {allProduct != "" && <Grid item md={13} sm={16}>
+                {allProduct !== "" && <Grid item md={13} sm={16}>
                     <Grid container sx={{ mb: 2 }}>
                         <Grid item>
                             <Breadcrumb breadcrumb={breadcrumb} />
@@ -94,7 +94,7 @@ const Products = () => {
                     </Grid>
                 </Grid>}
             </Grid>
-        </div>
+        </Fragment>
     );
 };
 

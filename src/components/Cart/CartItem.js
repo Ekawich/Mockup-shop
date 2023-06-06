@@ -23,7 +23,7 @@ const CartItem = (props) => {
     }
 
     return (
-        <Card sx={{ display: 'flex', my: 2 }} fullWidth>
+        <Card sx={{ display: 'flex', my: 2 }}>
             <CardMedia
                 component="img"
                 sx={{ maxWidth: 250, height: 200 }}
