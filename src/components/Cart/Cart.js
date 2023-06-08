@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import CartItem from './CartItem';
 
 import Box from '@mui/material/Box';

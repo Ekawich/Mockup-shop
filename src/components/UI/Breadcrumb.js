@@ -3,8 +3,6 @@ import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 
-const main = "https://dummyjson.com/products"
-
 const Breadcrumb = (props) => {
     if (!props.breadcrumb) {
         return (

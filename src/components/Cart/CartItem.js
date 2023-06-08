@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -15,7 +14,6 @@ import { useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart';
 
 const CartItem = (props) => {
-    const theme = useTheme();
     const dispatch = useDispatch()
 
     const removeCart = () => {

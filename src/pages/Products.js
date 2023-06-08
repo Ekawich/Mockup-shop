@@ -22,32 +22,31 @@ const Products = () => {
     const [breadcrumb, setBreadcrumb] = useState("")
 
     useEffect(() => {
+        const getProducts = async () => {
+            let main = "https://dummyjson.com/products"
+            let searchValue = "/search?q=" + search
+            let limitPage = "limit=12&skip=" + skip
+            let url = ""
+            if (search) {
+                url = main + searchValue + "&" + limitPage
+                setProductByCate("")
+                setBreadcrumb("")
+            } else {
+                url = main + productByCate + "?" + limitPage
+            }
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json"
+                }
+            })
+            const data = await response.json()
+            // console.log(data)
+            setAllProduct(data.products)
+            setCountTotalProducts(data.total)
+        }
         getProducts()
     }, [skip, productByCate, search])
-
-    const getProducts = async () => {
-        let main = "https://dummyjson.com/products"
-        let searchValue = "/search?q=" + search
-        let limitPage = "limit=12&skip=" + skip
-        let url = ""
-        if (search) {
-            url = main + searchValue + "&" + limitPage
-            setProductByCate("")
-            setBreadcrumb("")
-        } else {
-            url = main + productByCate + "?" + limitPage
-        }
-        const response = await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-type": "application/json"
-            }
-        })
-        const data = await response.json()
-        // console.log(data)
-        setAllProduct(data.products)
-        setCountTotalProducts(data.total)
-    }
 
     const skipDataChange = (value) => {
         setSkip(value)
@@ -68,7 +67,6 @@ const Products = () => {
     }
 
     const addToCart = (item) => {
-        // console.log(item)
         dispatch(cartActions.addItems(item))
     }
 

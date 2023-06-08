@@ -11,7 +11,7 @@ const Paginate = (props) => {
 
     useEffect(() => {
         props.changePage(skipProduct)
-    }, [skipProduct])
+    })
 
     const handlerChangePage = (value) => {
         if (value === 1) {
