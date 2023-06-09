@@ -7,7 +7,7 @@ const Default = (props) => {
     return (
         <Fragment>
             <NavBars />
-            <Container>
+            <Container maxWidth="xl">
                 <main>
                     {props.children}
                 </main>

@@ -36,17 +36,17 @@ const ProductCard = (props) => {
                 title={props.title}
             />
             <CardContent sx={{ pb: 0 }}>
-                <Typography gutterBottom variant="h5" component="div" className='product-title' sx={{ mb: 0 }}>
+                <Typography gutterBottom variant='h5' component="div" className='product-title' sx={{ mb: 0, fontWeight: "bold" }}>
                     {props.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" className='product-desc' sx={{ mb: 1 }}>
+                {/* <Typography color="text.secondary" className='product-desc' sx={{ mb: 1, fontSize: "small" }}>
                     {props.desc}
-                </Typography>
-                <Stack direction="row">
-                    <Typography variant="h5" sx={{ mr: 1 }}>
+                </Typography> */}
+                <Stack direction="row" alignItems="center">
+                    <Typography variant="h6" sx={{ mr: 1, fontWeight: "bold" }} color="primary">
                         {(props.price - discount).toFixed(2) + "$"}
                     </Typography>
-                    <Typography variant="h6" sx={{ textDecoration: "line-through" }}>
+                    <Typography sx={{ textDecoration: "line-through", fontSize: "small" }}>
                         {props.price + "$"}
                     </Typography>
                 </Stack>

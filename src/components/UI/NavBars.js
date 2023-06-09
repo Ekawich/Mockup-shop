@@ -74,7 +74,7 @@ const NavBars = () => {
     return (
         <Box sx={{ flexGrow: 1, mb: 2 }}>
             <AppBar position="static" >
-                <Container>
+                <Container maxWidth="xl">
                     <Toolbar>
                         <IconButton
                             size="large"

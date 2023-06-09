@@ -6,10 +6,11 @@ import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import ClearIcon from '@mui/icons-material/Clear';
+import TextField from '@mui/material/TextField';
+
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart';
 
@@ -21,52 +22,48 @@ const CartItem = (props) => {
     }
 
     return (
-        <Card sx={{ display: 'flex', my: 2 }}>
+        <Card sx={{ display: 'flex', height: 120 }}>
             <CardMedia
                 component="img"
-                sx={{ maxWidth: 250, height: 200 }}
+                sx={{ width: "auto", maxWidth: "30%", height: "100%" }}
                 image={props.thumbnail}
                 alt={props.title}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column', width: "100%" }}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="div" variant="h5">
+            <Box sx={{ display: 'flex', flexDirection: 'column', width: "100%", position: "relative" }} >
+                <CardContent sx={{ flex: '1 0 auto', p: 1, px: 2 }}>
+                    <Typography component="div" sx={{ fontWeight: "bold", fontSize: "medium" }}>
                         {props.title}
                     </Typography>
-                    <Typography component="div" variant="h6" sx={{ mb: 1 }}>
+                    <Typography component="div" sx={{ fontSize: "small", opacity: "0.6" }}>
                         {props.brand}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" className='product-desc' sx={{ mb: 1 }}>
+                    {/* <Typography variant="body2" color="text.secondary" className='product-desc' sx={{ mb: 1 }}>
                         {props.desc}
+                    </Typography> */}
+                    <Typography sx={{ fontSize: "medium" }}>
+                        {((props.price - props.discount).toFixed(2)) + "$"}
                     </Typography>
-                    <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mt: 2 }}>
-                        <Typography variant="h5" sx={{ mr: 4 }}>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2 }}>
+                        <Typography component="div" sx={{ fontSize: "medium", fontWeight: "bold" }} color="primary">
                             {((props.price - props.discount).toFixed(2) * props.quantity) + "$"}
                         </Typography>
-                        <Stack direction="row">
-                            <IconButton aria-label="minus" color="primary">
-                                <RemoveIcon />
+                        <Stack direction="row" alignItems="center">
+                            <IconButton aria-label="minus" color="primary" sx={{ p: 0 }}>
+                                <RemoveIcon fontSize="small" />
                             </IconButton>
-                            <TextField
-                                id="outlined-number"
-                                label="Quantity"
-                                type="number"
-                                size='small'
-                                defaultValue={props.quantity}
-                                sx={{ width: 75, mx: 1 }}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                            <IconButton aria-label="plus" color="primary">
-                                <AddIcon />
-                            </IconButton>
-                            <IconButton aria-label="delete" onClick={removeCart}>
-                                <DeleteIcon />
+                            {/* <TextField label="Quantity" variant="outlined" size="small" defaultValue={props.quantity} sx={{ width: 70, mx: 1 }} /> */}
+                            <Typography sx={{ fontSize: "small", mx: 1 }}>
+                                {props.quantity}
+                            </Typography>
+                            <IconButton aria-label="plus" color="primary" sx={{ p: 0 }}>
+                                <AddIcon fontSize="small" />
                             </IconButton>
                         </Stack>
                     </Stack>
                 </CardContent>
+                <IconButton aria-label="delete" sx={{ top: 0, right: 0, position: "absolute" }} onClick={removeCart}>
+                    <ClearIcon fontSize="small" />
+                </IconButton>
             </Box>
         </Card>
     );
