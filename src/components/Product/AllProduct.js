@@ -24,9 +24,9 @@ const AllProduct = (props) => {
                     </Grid>
                 )
             }) :
-                [...Array(mockupItem).keys()].map(() => {
+                [...Array(mockupItem).keys()].map((item, idx) => {
                     return (
-                        <Grid item md={3} sm={4} xs={6} >
+                        <Grid item md={3} sm={4} xs={6} key={idx}>
                             <Skeleton animation="wave" height={350} sx={{ transform: "none" }} />
                         </Grid>
                     )

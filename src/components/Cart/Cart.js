@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Drawer from "@mui/material/Drawer";
-import Grid from '@mui/material/Grid';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../../store/cart';
@@ -14,7 +13,7 @@ import { cartActions } from '../../store/cart';
 const Cart = () => {
     const showCart = useSelector(state => state.cart.toggleCart)
     const itemInCart = useSelector(state => state.cart.items)
-    const totalAmount = useSelector(state => state.cart.totalAmount)
+    const totalPrice = useSelector(state => state.cart.totalPrice)
     const dispatch = useDispatch()
 
     const handleClose = () => {
@@ -33,34 +32,32 @@ const Cart = () => {
             >
                 <Box sx={{ width: 400, p: 2, }}>
                     <Box sx={{ height: "85vh", overflow: "auto", mb: 2 }}>
-                        <Grid container spacing={2} columns={{ md: 12 }}>
+                        <Stack direction="column" spacing={2} sx={{ height: "100%" }}>
                             {itemInCart.length > 0 ? itemInCart.map((item, idx) => {
                                 return (
-                                    <Grid item md={12}>
-                                        <CartItem
-                                            key={item.id + idx}
-                                            id={item.id}
-                                            thumbnail={item.thumbnail}
-                                            brand={item.brand}
-                                            title={item.title}
-                                            discount={item.discount}
-                                            price={item.price}
-                                            quantity={item.quantity}
-                                            desc={item.desc}
-                                        />
-                                    </Grid>
+                                    <CartItem
+                                        key={item.id + idx}
+                                        id={item.id}
+                                        thumbnail={item.thumbnail}
+                                        brand={item.brand}
+                                        title={item.title}
+                                        discount={item.discount}
+                                        price={item.price}
+                                        quantity={item.quantity}
+                                        desc={item.desc}
+                                    />
                                 )
                             }) :
-                                <Stack direction={'column'} alignItems="center" justifyContent="center" sx={{ height: "100%" }}>
+                                <Stack direction='column' alignItems="center" justifyContent="center" sx={{ height: "100%" }}>
                                     <Typography variant="h6" sx={{ opacity: "0.5" }}>
                                         Don't have item
                                     </Typography>
                                 </Stack>
                             }
-                        </Grid>
+                        </Stack>
                     </Box>
                     <Typography id="modal-modal-title" variant="h5" component="h2" textAlign="right" sx={{ mb: 2 }}>
-                        {"Total amount " + parseFloat(totalAmount).toFixed(2)}
+                        {"Total amount " + parseFloat(totalPrice).toFixed(2)}
                     </Typography>
                     <Stack direction="row" justifyContent="end">
                         <Button variant="outlined" size='large' onClick={handleClose}>Close</Button>

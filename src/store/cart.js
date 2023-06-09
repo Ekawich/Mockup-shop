@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialCartState = {
     items: [],
-    totalAmount: 0,
+    totalPrice: 0,
     toggleCart: false
 }
 
@@ -15,24 +15,35 @@ const addCartSlice = createSlice({
             const existingItem = state.items.find(item => item.id === newItem.id)
 
             if (existingItem) {
-                existingItem.quantity += parseInt(newItem.quantity)
-                state.totalAmount += parseFloat(newItem.price - newItem.discount).toFixed(2) * parseInt(newItem.quantity);
+                existingItem.quantity += newItem.quantity
             } else {
                 state.items.push(newItem)
-                state.totalAmount += parseFloat(newItem.price - newItem.discount).toFixed(2) * parseInt(newItem.quantity)
             }
+
+            state.totalPrice += (newItem.price - newItem.discount) * newItem.quantity
         },
         removeItem(state, action) {
             const itemId = action.payload
-            const updatedItems = state.items.filter(item => item.id !== itemId);
-            const removedItem = state.items.find(item => item.id === itemId);
-            if (removedItem) {
-                state.totalAmount -= parseFloat(removedItem.price - removedItem.discount).toFixed(2) * parseInt(removedItem.quantity)
+            const existingItemIndex = state.items.findIndex(item => item.id === itemId)
+
+            if (existingItemIndex !== -1) {
+                const existingItem = state.items[existingItemIndex]
+                state.totalPrice -= (existingItem.price - existingItem.discount) * existingItem.quantity
+                state.items.splice(existingItemIndex, 1)
             }
-            state.items = updatedItems;
         },
         toggleCart(state) {
             state.toggleCart = !state.toggleCart
+        },
+        updateQuantity(state, action) {
+            const { itemId, newQuantity } = action.payload
+            const itemToUpdate = state.items.find(item => item.id === itemId)
+
+            if (itemToUpdate && newQuantity > 0) {
+                const quantityDiff = newQuantity - itemToUpdate.quantity;
+                itemToUpdate.quantity = newQuantity
+                state.totalPrice += ((itemToUpdate.price - itemToUpdate.discount) * quantityDiff)
+            }
         }
 
     }

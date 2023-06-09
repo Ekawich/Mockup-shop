@@ -9,7 +9,6 @@ import Stack from '@mui/material/Stack';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ClearIcon from '@mui/icons-material/Clear';
-import TextField from '@mui/material/TextField';
 
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart';
@@ -19,6 +18,15 @@ const CartItem = (props) => {
 
     const removeCart = () => {
         dispatch(cartActions.removeItem(props.id))
+    }
+
+    const increaseQuantityHandler = (itemId, newQuantity) => {
+        console.log(itemId, newQuantity)
+        dispatch(cartActions.updateQuantity({ itemId, newQuantity }))
+    }
+
+    const decreaseQuantityHandler = (itemId, newQuantity) => {
+        dispatch(cartActions.updateQuantity({ itemId, newQuantity }))
     }
 
     return (
@@ -45,17 +53,17 @@ const CartItem = (props) => {
                     </Typography>
                     <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2 }}>
                         <Typography component="div" sx={{ fontSize: "medium", fontWeight: "bold" }} color="primary">
-                            {((props.price - props.discount).toFixed(2) * props.quantity) + "$"}
+                            {(parseFloat(props.price - props.discount).toFixed(2) * props.quantity)}$
                         </Typography>
                         <Stack direction="row" alignItems="center">
-                            <IconButton aria-label="minus" color="primary" sx={{ p: 0 }}>
+                            <IconButton aria-label="minus" color="primary" sx={{ p: 0 }} onClick={() => decreaseQuantityHandler(props.id, props.quantity - 1)}>
                                 <RemoveIcon fontSize="small" />
                             </IconButton>
                             {/* <TextField label="Quantity" variant="outlined" size="small" defaultValue={props.quantity} sx={{ width: 70, mx: 1 }} /> */}
-                            <Typography sx={{ fontSize: "small", mx: 1 }}>
+                            <Typography sx={{ fontSize: "medium", mx: 1 }}>
                                 {props.quantity}
                             </Typography>
-                            <IconButton aria-label="plus" color="primary" sx={{ p: 0 }}>
+                            <IconButton aria-label="plus" color="primary" sx={{ p: 0 }} onClick={() => increaseQuantityHandler(props.id, props.quantity + 1)}>
                                 <AddIcon fontSize="small" />
                             </IconButton>
                         </Stack>
