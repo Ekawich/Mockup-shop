@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Drawer from "@mui/material/Drawer";
+import Grid from "@mui/material/Grid";
+
 
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../../store/cart';
@@ -31,30 +33,34 @@ const Cart = () => {
                 onClose={handleClose}
             >
                 <Box sx={{ width: 400, p: 2, }}>
-                    <Box sx={{ height: "85vh", overflow: "auto", mb: 2 }}>
-                        <Stack direction="column" spacing={2} sx={{ height: "100%" }}>
+                    <Box sx={{ height: "85vh", overflowY: "auto", mb: 2 }}>
+                        <Grid container columns={12} spacing={2} sx={{ height: itemInCart.length === 0 ? "100%" : "auto" }}>
                             {itemInCart.length > 0 ? itemInCart.map((item, idx) => {
                                 return (
-                                    <CartItem
-                                        key={item.id + idx}
-                                        id={item.id}
-                                        thumbnail={item.thumbnail}
-                                        brand={item.brand}
-                                        title={item.title}
-                                        discount={item.discount}
-                                        price={item.price}
-                                        quantity={item.quantity}
-                                        desc={item.desc}
-                                    />
+                                    <Grid item md={12}>
+                                        <CartItem
+                                            key={item.id + idx}
+                                            id={item.id}
+                                            thumbnail={item.thumbnail}
+                                            brand={item.brand}
+                                            title={item.title}
+                                            discount={item.discount}
+                                            price={item.price}
+                                            quantity={item.quantity}
+                                            desc={item.desc}
+                                        />
+                                    </Grid>
                                 )
                             }) :
-                                <Stack direction='column' alignItems="center" justifyContent="center" sx={{ height: "100%" }}>
-                                    <Typography variant="h6" sx={{ opacity: "0.5" }}>
-                                        Don't have item
-                                    </Typography>
-                                </Stack>
+                                <Grid item md={12} sx={{ height: "100%" }}>
+                                    <Stack direction='column' alignItems="center" justifyContent="center" sx={{ height: "100%" }}>
+                                        <Typography variant="h6" sx={{ opacity: "0.5" }}>
+                                            Don't have item
+                                        </Typography>
+                                    </Stack>
+                                </Grid>
                             }
-                        </Stack>
+                        </Grid>
                     </Box>
                     <Typography id="modal-modal-title" variant="h5" component="h2" textAlign="right" sx={{ mb: 2 }}>
                         {"Total amount " + parseFloat(totalPrice).toFixed(2)}

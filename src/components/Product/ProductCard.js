@@ -29,7 +29,7 @@ const ProductCard = (props) => {
     }
 
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card>
             <CardMedia
                 sx={{ height: 200 }}
                 image={props.thumbnail}
