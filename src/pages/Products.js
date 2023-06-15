@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../store/cart';
 
@@ -71,28 +71,25 @@ const Products = () => {
     }
 
     return (
-        <Fragment>
-            <Grid container spacing={2} columns={16}>
-                <Grid item md={3} sm={0}>
-                    <Categories changeCate={selectCategories} />
-                </Grid>
-                {allProduct !== "" && <Grid item md={13} sm={16}>
+        <Grid container spacing={2} columns={16}>
+            <Categories changeCate={selectCategories} />
+            {allProduct !== "" &&
+                <Grid item md={13} sx={{ overflowY: "auto" }}>
                     <Grid container sx={{ mb: 2 }}>
                         <Grid item>
                             <Breadcrumb breadcrumb={breadcrumb} />
                         </Grid>
                     </Grid>
                     <AllProduct products={allProduct} onClick={addToCart} />
-                    <Grid container sx={{ mt: 2 }}>
-                        <Grid item>
-                            <Box>
-                                <Paginate alignItem="end" countData={countTotalProducts} changePage={skipDataChange} />
+                    <Grid container sx={{ mt: 2 }} column={12}>
+                        <Grid item md={12}>
+                            <Box sx={{ textAlign: "right" }}>
+                                <Paginate countData={countTotalProducts} changePage={skipDataChange} />
                             </Box>
                         </Grid>
                     </Grid>
                 </Grid>}
-            </Grid>
-        </Fragment>
+        </Grid>
     );
 };
 

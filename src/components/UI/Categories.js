@@ -8,6 +8,8 @@ import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
+import Grid from '@mui/material/Grid';
+
 const Categories = (props) => {
     const [allCategories, setAllCategories] = useState(null)
 
@@ -40,45 +42,46 @@ const Categories = (props) => {
     };
 
     return (
-        <List
-            component="nav"
-            aria-labelledby="nested-list-subheader"
-            sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}
-            subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                    Categories
-                </ListSubheader>
-            }
-        >
-            <ListItemButton onClick={() => props.changeCate("all")}>
-                <ListItemText primary="ALL PRODUCTS" />
-            </ListItemButton>
-            {allCategories && allCategories.map((item, idx) => {
-                return (
-                    typeof item !== 'object' ?
-                        <ListItemButton key={item + idx} onClick={() => props.changeCate(item)}>
-                            <ListItemText primary={item.toUpperCase()} />
-                        </ListItemButton> :
-                        <Fragment key={item + idx}>
-                            <ListItemButton onClick={() => dropdownToggle(idx)}>
-                                <ListItemText primary={item.subCate[0].split('-')[0].toUpperCase()} />
-                                {item.toggle ? <ExpandLess /> : <ExpandMore />}
-                            </ListItemButton>
-                            <Collapse in={item.toggle} timeout="auto" unmountOnExit>
-                                <List component="div" disablePadding>
-                                    {item.subCate.map((item2, idx2) => {
-                                        return (
-                                            <ListItemButton sx={{ pl: 4 }} key={item2 + idx2} onClick={() => props.changeCate(item2)}>
-                                                <ListItemText primary={item2.split('-')[1].toUpperCase()} />
-                                            </ListItemButton>
-                                        )
-                                    })}
-                                </List>
-                            </Collapse>
-                        </Fragment>
-                )
-            })}
-        </List>
+        <Grid item md={3}>
+            <List
+                component="nav"
+                aria-labelledby="nested-list-subheader"
+                subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                        Categories
+                    </ListSubheader>
+                }
+            >
+                <ListItemButton onClick={() => props.changeCate("all")}>
+                    <ListItemText primary="ALL PRODUCTS" />
+                </ListItemButton>
+                {allCategories && allCategories.map((item, idx) => {
+                    return (
+                        typeof item !== 'object' ?
+                            <ListItemButton key={item + idx} onClick={() => props.changeCate(item)}>
+                                <ListItemText primary={item.toUpperCase()} />
+                            </ListItemButton> :
+                            <Fragment key={item + idx}>
+                                <ListItemButton onClick={() => dropdownToggle(idx)}>
+                                    <ListItemText primary={item.subCate[0].split('-')[0].toUpperCase()} />
+                                    {item.toggle ? <ExpandLess /> : <ExpandMore />}
+                                </ListItemButton>
+                                <Collapse in={item.toggle} timeout="auto" unmountOnExit>
+                                    <List component="div" disablePadding>
+                                        {item.subCate.map((item2, idx2) => {
+                                            return (
+                                                <ListItemButton sx={{ pl: 4 }} key={item2 + idx2} onClick={() => props.changeCate(item2)}>
+                                                    <ListItemText primary={item2.split('-')[1].toUpperCase()} />
+                                                </ListItemButton>
+                                            )
+                                        })}
+                                    </List>
+                                </Collapse>
+                            </Fragment>
+                    )
+                })}
+            </List>
+        </Grid>
     );
 };
 

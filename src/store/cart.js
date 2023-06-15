@@ -44,8 +44,13 @@ const addCartSlice = createSlice({
                 itemToUpdate.quantity = newQuantity
                 state.totalPrice += ((itemToUpdate.price - itemToUpdate.discount) * quantityDiff)
             }
+        },
+        loadCart(state, action) {
+            console.log(action.payload)
+            const { items, totalPrice, toggleCart } = action.payload
+            // state.totalPrice = totalPrice
+            // state.toggleCart = toggleCart
         }
-
     }
 })
 

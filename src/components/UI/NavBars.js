@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart';
 
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -16,6 +15,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
 import { searchActions } from '../../store/search';
+// import ButtonGroup from '@mui/material/ButtonGroup';
+// import Button from '@mui/material/Button';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -61,7 +62,32 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const NavBars = () => {
     const dispatch = useDispatch()
-    const countItems = useSelector(state => state.cart.items.length);
+    const cartItem = useSelector(state => state.cart.items);
+    const totalQuantity = cartItem.reduce((acc, item) => acc + item.quantity, 0)
+
+    // const [allCategories, setAllCategories] = useState(null)
+
+    // useEffect(() => {
+    //     fetch("https://dummyjson.com/products/categories")
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             let allCate = []
+    //             let womens = { subCate: [], toggle: false }
+    //             let mens = { subCate: [], toggle: false }
+    //             for (let i = 0; i < data.length; i++) {
+    //                 if (data[i].includes('womens-')) {
+    //                     womens.subCate.push(data[i])
+    //                 } else if (data[i].includes('mens-')) {
+    //                     mens.subCate.push(data[i])
+    //                 } else {
+    //                     allCate.push(data[i])
+    //                 }
+    //             }
+    //             allCate.push(womens, mens)
+    //             console.log(allCate)
+    //             setAllCategories(allCate)
+    //         })
+    // }, [])
 
     const toggleCart = () => {
         dispatch(cartActions.toggleCart())
@@ -72,46 +98,44 @@ const NavBars = () => {
     }
 
     return (
-        <Box sx={{ flexGrow: 1, mb: 2 }}>
-            <AppBar position="static" >
-                <Container maxWidth="xl">
-                    <Toolbar>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            sx={{
-                                mr: 2,
-                                display: { sm: 'block', md: 'none' }
-                            }}
-                        >
-                            <MenuIcon />
+        <AppBar position="sticky">
+            <Container maxWidth="xl">
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{
+                            mr: 2,
+                            display: { sm: 'block', md: 'none' }
+                        }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} href="/">
+                        MOCKUP-SHOP
+                    </Typography>
+                    <Search sx={{ mr: 2 }}>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="Search…"
+                            inputProps={{ 'aria-label': 'search' }}
+                            onChange={searchProduct}
+                        />
+                    </Search>
+                    <Stack spacing={2} direction="row">
+                        <IconButton aria-label="ShoppingCart" size="large" onClick={toggleCart}>
+                            <Badge badgeContent={totalQuantity} color="secondary">
+                                <ShoppingCartIcon color="action" />
+                            </Badge>
                         </IconButton>
-                        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} href="/">
-                            MOCKUP-SHOP
-                        </Typography>
-                        <Search sx={{ mr: 2 }}>
-                            <SearchIconWrapper>
-                                <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="Search…"
-                                inputProps={{ 'aria-label': 'search' }}
-                                onChange={searchProduct}
-                            />
-                        </Search>
-                        <Stack spacing={2} direction="row">
-                            <IconButton aria-label="ShoppingCart" size="large" onClick={toggleCart}>
-                                <Badge badgeContent={countItems} color="secondary">
-                                    <ShoppingCartIcon color="action" />
-                                </Badge>
-                            </IconButton>
-                        </Stack>
-                    </Toolbar>
-                </Container>
-            </AppBar>
-        </Box >
+                    </Stack>
+                </Toolbar>
+            </Container>
+        </AppBar>
     );
 };
 
