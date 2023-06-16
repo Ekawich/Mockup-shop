@@ -10,6 +10,7 @@ import Breadcrumb from '../components/UI/Breadcrumb';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { searchActions } from '../store/search';
+import { authActions } from '../store/auth';
 
 const Products = () => {
     const dispatch = useDispatch()
@@ -47,6 +48,15 @@ const Products = () => {
         }
         getProducts()
     }, [skip, productByCate, search])
+
+    useEffect(() => {
+        const isLogin = localStorage.getItem('isLogin')
+        console.log(isLogin, '----')
+        if (isLogin === 'true') {
+            const userData = localStorage.getItem('userData')
+            dispatch(authActions.setUser(JSON.parse(userData)))
+        }
+    }, [])
 
     const skipDataChange = (value) => {
         setSkip(value)

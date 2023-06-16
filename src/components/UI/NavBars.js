@@ -1,6 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart';
+import { authActions } from '../../store/auth';
+import { auth } from '../../services/GoogleLogin';
+import { signOut } from 'firebase/auth';
+
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,10 +17,14 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
+import Button from '@mui/material/Button';
 import { styled, alpha } from '@mui/material/styles';
 import { searchActions } from '../../store/search';
-// import ButtonGroup from '@mui/material/ButtonGroup';
-// import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -62,32 +70,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const NavBars = () => {
     const dispatch = useDispatch()
+    const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
     const cartItem = useSelector(state => state.cart.items);
+    const isLogin = useSelector(state => state.auth.isLoggedIn)
+    const user = useSelector(state => state.auth.user)
     const totalQuantity = cartItem.reduce((acc, item) => acc + item.quantity, 0)
 
-    // const [allCategories, setAllCategories] = useState(null)
+    const settings = ['Logout'];
 
-    // useEffect(() => {
-    //     fetch("https://dummyjson.com/products/categories")
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             let allCate = []
-    //             let womens = { subCate: [], toggle: false }
-    //             let mens = { subCate: [], toggle: false }
-    //             for (let i = 0; i < data.length; i++) {
-    //                 if (data[i].includes('womens-')) {
-    //                     womens.subCate.push(data[i])
-    //                 } else if (data[i].includes('mens-')) {
-    //                     mens.subCate.push(data[i])
-    //                 } else {
-    //                     allCate.push(data[i])
-    //                 }
-    //             }
-    //             allCate.push(womens, mens)
-    //             console.log(allCate)
-    //             setAllCategories(allCate)
-    //         })
-    // }, [])
 
     const toggleCart = () => {
         dispatch(cartActions.toggleCart())
@@ -97,10 +88,39 @@ const NavBars = () => {
         dispatch(searchActions.searchValue(e.target.value))
     }
 
+    const showLogin = () => {
+        dispatch(authActions.showModal())
+    }
+
+    const handleOpenNavMenu = (event) => {
+        setAnchorElNav(event.currentTarget);
+    };
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseNavMenu = () => {
+        setAnchorElNav(null);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+
+    const handleSignOut = () => {
+        signOut(auth).then(() => {
+            localStorage.setItem('isLogin', false)
+            localStorage.removeItem('userData')
+            dispatch(authActions.userLogout())
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
     return (
         <AppBar position="sticky">
             <Container maxWidth="xl">
-                <Toolbar>
+                <Toolbar sx={{ p: 0 }}>
                     <IconButton
                         size="large"
                         edge="start"
@@ -126,13 +146,45 @@ const NavBars = () => {
                             onChange={searchProduct}
                         />
                     </Search>
-                    <Stack spacing={2} direction="row">
+                    <Stack spacing={2} direction="row" sx={{ mr: 2 }}>
                         <IconButton aria-label="ShoppingCart" size="large" onClick={toggleCart}>
                             <Badge badgeContent={totalQuantity} color="secondary">
                                 <ShoppingCartIcon color="action" />
                             </Badge>
                         </IconButton>
                     </Stack>
+                    {!isLogin ?
+                        <Button color="inherit" onClick={showLogin}>Login</Button>
+                        :
+                        <Box sx={{ flexGrow: 0 }}>
+                            <Tooltip title="Open settings">
+                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                    <Avatar alt={user.name && 'N'} src='https://lh3.googleusercontent.com/a/AAcHTteK7OeJaAEVCiuO94NgcM8WZDOjhd3Gd0ZKo5euhA=s96-c' />
+                                </IconButton>
+                            </Tooltip>
+                            <Menu
+                                sx={{ mt: '45px' }}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleSignOut}
+                            >
+                                {settings.map((setting) => (
+                                    <MenuItem key={setting} onClick={handleSignOut}>
+                                        <Typography textAlign="center">{setting}</Typography>
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+                        </Box>}
                 </Toolbar>
             </Container>
         </AppBar>

@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import NavBars from '../components/UI/NavBars';
 import Container from '@mui/material/Container';
 import Cart from '../components/Cart/Cart';
+import Login from '../components/Modal/Login';
 
 const Default = (props) => {
     return (
@@ -12,6 +13,7 @@ const Default = (props) => {
                     {props.children}
                 </main>
                 <Cart />
+                <Login />
             </Container>
         </Fragment>
     );
