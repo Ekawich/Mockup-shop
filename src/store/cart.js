@@ -48,8 +48,9 @@ const addCartSlice = createSlice({
         loadCart(state, action) {
             console.log(action.payload)
             const { items, totalPrice, toggleCart } = action.payload
-            // state.totalPrice = totalPrice
-            // state.toggleCart = toggleCart
+            state.items = items
+            state.totalPrice = totalPrice
+            state.toggleCart = toggleCart
         }
     }
 })

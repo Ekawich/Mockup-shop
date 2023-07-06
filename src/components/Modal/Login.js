@@ -54,7 +54,7 @@ const Login = () => {
 
     const handleGoogleLogin = () => {
         signInWithPopup(auth, provider).then((data) => {
-            // console.log(data)
+            console.log(data)
             const userData = {
                 name: data._tokenResponse.firstName,
                 photo: data._tokenResponse.photoUrl

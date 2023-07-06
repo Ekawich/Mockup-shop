@@ -159,7 +159,7 @@ const NavBars = () => {
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt={user.name && 'N'} src='https://lh3.googleusercontent.com/a/AAcHTteK7OeJaAEVCiuO94NgcM8WZDOjhd3Gd0ZKo5euhA=s96-c' />
+                                    <Avatar alt={user.name} src={user.photo} />
                                 </IconButton>
                             </Tooltip>
                             <Menu

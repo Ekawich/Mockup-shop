@@ -17,11 +17,11 @@ import { cartActions } from '../../store/cart';
 const Cart = () => {
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart)
+    const [savedCart, setSavedCard] = useState(JSON.parse(localStorage.getItem('cart')) || null)
     const [cartLoading, setCartLoading] = useState(false)
 
     useEffect(() => {
         if (!cartLoading) {
-            const savedCart = JSON.parse(localStorage.getItem('cart'))
             if (savedCart) {
                 dispatch(cartActions.loadCart(savedCart))
             }
