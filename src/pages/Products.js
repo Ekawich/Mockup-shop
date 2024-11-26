@@ -51,7 +51,6 @@ const Products = () => {
 
     useEffect(() => {
         const isLogin = localStorage.getItem('isLogin')
-        console.log(isLogin, '----')
         if (isLogin === 'true') {
             const userData = localStorage.getItem('userData')
             dispatch(authActions.setUser(JSON.parse(userData)))
@@ -69,7 +68,7 @@ const Products = () => {
             setBreadcrumb("")
             setSkip(0)
         } else {
-            let newCate = "/category/" + value
+            let newCate = "/category/" + value.slug
             setProductByCate(newCate)
             setBreadcrumb(newCate)
             setSkip(0)
